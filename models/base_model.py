@@ -9,6 +9,11 @@ from datetime import datetime
 class BaseModel:
     """Class Base Model"""
 
+    id = str(uuid4())
+    datenow = datetime.now()
+    created_at = datenow
+    updated_at = datenow
+
     def __init__(self, *args, **kwargs):
         """Constructor"""
         if kwargs:
