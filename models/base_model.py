@@ -33,6 +33,7 @@ class BaseModel:
     def to_dict(self):
         """Convert object to dictionary representation"""
         dct = self.__dict__
+        dct['id'] = self.id
         dct['__class__'] = self.__class__.__name__
         dct['created_at'] = self.created_at.isoformat()
         dct['updated_at'] = self.updated_at.isoformat()
