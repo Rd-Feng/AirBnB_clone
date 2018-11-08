@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from models import storage
 from uuid import uuid4
 from datetime import datetime
 
@@ -23,6 +24,11 @@ class BaseModel:
         """String representation"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
                                      self.__dict__)
+
+    def save(self):
+        """Updates the updated_at public instance attribute"""
+        storage.save(self)
+        updated_at = datetime.now()
 
     def to_dict(self):
         """Convert object to dictionary representation"""
