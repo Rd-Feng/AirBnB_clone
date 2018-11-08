@@ -9,20 +9,15 @@ from datetime import datetime
 class BaseModel:
     """Class Base Model"""
 
-    id = str(uuid4())
-    datenow = datetime.now()
-    created_at = datenow
-    updated_at = datenow
-
     def __init__(self, *args, **kwargs):
         """Constructor"""
         if kwargs:
             for k, v in kwargs.items():
                 self.__setattr__(k, v)
-        self.id = type(self).id = str(uuid4())
+        self.id = str(uuid4())
         datenow = datetime.now()
-        self.created_at = type(self).created_at = datenow
-        self.updated_at = type(self).updated_at = datenow
+        self.created_at = datenow
+        self.updated_at = datenow
 
 
     def __str__(self):
