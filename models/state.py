@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 from base_model import BaseModel
 
-'''Class State Definition'''
+'''State Class Module'''
 
 
 class State(BaseModel):
-    '''State Class'''
+    '''State Class Definition'''
 
     name = ''
