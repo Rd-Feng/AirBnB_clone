@@ -15,7 +15,8 @@ class FileStorage:
 
     def new(self, obj):
         """ put object in __objects """
-        self.__objects[obj.__class__.id] = obj
+        k = obj.__class__.__name__ + "." + obj.id
+        self.__objects[k] = obj
 
     def save(self):
         """ save the objects dictionary into file """
