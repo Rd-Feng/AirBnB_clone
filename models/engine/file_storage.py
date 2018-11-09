@@ -23,13 +23,17 @@ class FileStorage:
         """ make serializable dict objects """
         temp = {}
         for k, v in self.__objects.items():
-            temp[k] = str(v)
+            temp[k] = v.to_dict()
         with open(self.__file_path, 'w', encoding='utf-8') as f:
             f.write(json.dumps(temp))
 
     def reload(self):
+        from ..base_model import BaseModel
+        clslist = {'BaseModel': BaseModel}
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
-                self.__objects = json.loads(f.readline())
+                temp = json.loads(f.readline())
+                for k, v in temp.items():
+                    self.new(clslist[v['__class__']](**v))
         except FileNotFoundError:
             pass
