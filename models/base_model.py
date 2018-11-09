@@ -23,6 +23,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datenow
         self.updated_at = datenow
+        storage.new(self)
 
     def __str__(self):
         """String representation"""
