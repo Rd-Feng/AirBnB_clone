@@ -90,7 +90,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
+        from datetime import datetime
         clsname, objid, attrname, attrval = None, None, None, None
+        updatetime = datetime.now()
         args = arg.split(' ')
         if len(args) > 0:
             clsname = args[0]
@@ -118,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 obj.__setattr__(attrname,
                                 type(obj.__getattribute__(attrname))(attrval))
+                obj.updated_at = updatetime
 
     def do_quit(self, arg):
         """Quit command to exit the program
