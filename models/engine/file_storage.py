@@ -29,7 +29,14 @@ class FileStorage:
 
     def reload(self):
         from ..base_model import BaseModel
-        clslist = {'BaseModel': BaseModel}
+        from ..state import State
+        from ..city import City
+        from ..amenity import Amenity
+        from ..place import Place
+        from ..review import Review
+
+        clslist = {'BaseModel': BaseModel, 'State': State, 'City': City,
+               'Amenity': Amenity, 'Place': Place, 'Review': Review}
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
                 temp = json.loads(f.readline())
