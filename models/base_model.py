@@ -16,14 +16,13 @@ class BaseModel:
             for k, v in kwargs.items():
                 if k == '__class__':
                     continue
-                if k is 'created_at':
+                if k in ['created_at', 'updated_at']:
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 self.__setattr__(k, v)
         else:
             self.id = str(uuid4())
             self.created_at = datenow
-        self.updated_at = datenow
-        if not kwargs:
+            self.updated_at = datenow
             storage.new(self)
 
     def __str__(self):
@@ -38,7 +37,7 @@ class BaseModel:
 
     def to_dict(self):
         """Convert object to dictionary representation"""
-        dct = self.__dict__
+        dct = self.__dict__.copy()
         dct['__class__'] = self.__class__.__name__
         dct['created_at'] = self.created_at.isoformat()
         dct['updated_at'] = self.updated_at.isoformat()
