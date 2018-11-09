@@ -76,8 +76,42 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print([str(v) for k, v in models.storage.all().items()])
         else:
+            if not self.clslist.get(arg):
+                print("** class doesn't exist **")
+                return False
             print([str(v) for k, v in models.storage.all().items()
                    if type(v) is self.clslist.get(arg)])
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id"""
+        clsname, objid, attrname, attrval = None, None, None, None
+        args = arg.split(' ')
+        if len(args) > 0:
+            clsname = args[0]
+        if len(args) > 1:
+            objid = args[1]
+        if len(args) > 2:
+            attrname = args[2]
+        if len(args) > 3:
+            attrval = args[3]
+        if not clsname:
+            print('** class name missing **')
+        elif not objid:
+            print('** instance id missing **')
+        elif not attrname:
+            print('** attribute name missing **')
+        elif not attrval:
+            print('** value missing **')
+        elif not self.clslist.get(clsname):
+            print("** class doesn't exist **")
+        else:
+            k = clsname + "." + objid;
+            obj = models.storage.all().get(k)
+            if not obj:
+                print('** no instance found **')
+            else:
+                obj.__setattr__(attrname,
+                                type(obj.__getattribute__(attrname))(attrval))
 
     def do_quit(self, arg):
         """Quit command to exit the program
