@@ -1,9 +1,9 @@
 #!/usr/bin/python3
+'''Base Model Module'''
+
 from . import storage
 from uuid import uuid4
 from datetime import datetime
-
-"""Base Model Module"""
 
 
 class BaseModel:

@@ -4,7 +4,7 @@ from models.base_model import BaseModel
 '''Place Class Module'''
 
 
-class Place(BaseModule):
+class Place(BaseModel):
     '''Place Class Definition'''
 
     city_id = ''
