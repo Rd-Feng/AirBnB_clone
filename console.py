@@ -7,6 +7,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.user import User
 """entry point for hbnb console"""
 
 
@@ -14,7 +15,8 @@ class HBNBCommand(cmd.Cmd):
     """ hbnb shell """
     prompt = '(hbnb) '
     clslist = {'BaseModel': BaseModel, 'State': State, 'City': City,
-               'Amenity': Amenity, 'Place': Place, 'Review': Review}
+               'Amenity': Amenity, 'Place': Place, 'Review': Review,
+               'User': User}
 
     def emptyline(self):
         """empty line"""

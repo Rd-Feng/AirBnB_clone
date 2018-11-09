@@ -34,9 +34,11 @@ class FileStorage:
         from ..amenity import Amenity
         from ..place import Place
         from ..review import Review
+        from ..user import User
 
         clslist = {'BaseModel': BaseModel, 'State': State, 'City': City,
-               'Amenity': Amenity, 'Place': Place, 'Review': Review}
+                   'Amenity': Amenity, 'Place': Place, 'Review': Review,
+                   'User': User}
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
                 temp = json.loads(f.readline())
