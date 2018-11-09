@@ -10,6 +10,10 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     clslist = {'BaseModel': BaseModel}
 
+    def emptyline(self):
+        """empty line"""
+        pass
+
     def do_create(self, clsname=None):
         """Creates a new instance of BaseModel, saves it and prints the id
         """
@@ -66,6 +70,14 @@ class HBNBCommand(cmd.Cmd):
             else:
                 del models.storage.all()[k]
                 models.storage.save()
+
+    def do_all(self, arg):
+        """Prints all instances based or not on the class name"""
+        if not arg:
+            print([str(v) for k, v in models.storage.all().items()])
+        else:
+            print([str(v) for k, v in models.storage.all().items()
+                   if type(v) is self.clslist.get(arg)])
 
     def do_quit(self, arg):
         """Quit command to exit the program
