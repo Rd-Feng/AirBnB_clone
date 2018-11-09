@@ -24,7 +24,6 @@ class BaseModel:
             self.created_at = datenow
         self.updated_at = datenow
 
-
     def __str__(self):
         """String representation"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
@@ -34,7 +33,6 @@ class BaseModel:
         """Updates the updated_at public instance attribute"""
         updated_at = datetime.now()
         storage.save()
-
 
     def to_dict(self):
         """Convert object to dictionary representation"""
