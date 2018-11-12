@@ -126,6 +126,7 @@ class HBNBCommand(cmd.Cmd):
                 obj.__setattr__(attrname,
                                 type(obj.__getattribute__(attrname))(attrval))
                 obj.updated_at = updatetime
+                obj.save()
 
     def do_quit(self, arg):
         """Quit command to exit the program
