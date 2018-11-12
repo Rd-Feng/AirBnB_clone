@@ -11,20 +11,20 @@ class FileStorage:
 
     def all(self):
         """ return dictionary objects """
-        return self.__objects
+        return type(self).__objects
 
     def new(self, obj):
         """ put object in __objects """
         k = obj.__class__.__name__ + "." + obj.id
-        self.__objects[k] = obj
+        type(self).__objects[k] = obj
 
     def save(self):
         """ save the objects dictionary into file """
         """ make serializable dict objects """
         temp = {}
-        for k, v in self.__objects.items():
+        for k, v in type(self).__objects.items():
             temp[k] = v.to_dict()
-        with open(self.__file_path, 'w', encoding='utf-8') as f:
+        with open(type(self).__file_path, 'w', encoding='utf-8') as f:
             f.write(json.dumps(temp))
 
     def reload(self):
@@ -40,7 +40,7 @@ class FileStorage:
                    'Amenity': Amenity, 'Place': Place, 'Review': Review,
                    'User': User}
         try:
-            with open(self.__file_path, 'r', encoding='utf-8') as f:
+            with open(type(self).__file_path, 'r', encoding='utf-8') as f:
                 temp = json.loads(f.readline())
                 for k, v in temp.items():
                     self.new(clslist[v['__class__']](**v))
