@@ -25,7 +25,7 @@ class FileStorage:
         for k, v in type(self).__objects.items():
             temp[k] = v.to_dict()
         with open(type(self).__file_path, 'w', encoding='utf-8') as f:
-            f.write(json.dumps(temp))
+            f.write(json.dumps(temp) + '\n')
 
     def reload(self):
         from ..base_model import BaseModel
