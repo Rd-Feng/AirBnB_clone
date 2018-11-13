@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 """File Storage Class"""
 import json
+from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.user import User
 
 
 class FileStorage:
@@ -29,13 +36,6 @@ class FileStorage:
 
     def reload(self):
         """reload objects from file"""
-        from ..base_model import BaseModel
-        from ..state import State
-        from ..city import City
-        from ..amenity import Amenity
-        from ..place import Place
-        from ..review import Review
-        from ..user import User
 
         clslist = {'BaseModel': BaseModel, 'State': State, 'City': City,
                    'Amenity': Amenity, 'Place': Place, 'Review': Review,
