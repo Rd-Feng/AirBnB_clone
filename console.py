@@ -145,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
             print('*** Unknown syntax:', l[0])
             return False
         clsname, line = l[0], l[1]
-        if l[0] not in list(self.clslist.keys()):
+        if clsname not in list(self.clslist.keys()):
             print('*** Unknown syntax: {}.{}'.format(clsname, line))
             return False
         l = line.split('(', 1)
@@ -165,9 +165,25 @@ class HBNBCommand(cmd.Cmd):
         elif mthname == 'destroy':
             self.do_destroy(clsname + " " + args.strip('"'))
         elif mthname == 'update':
-            from shlex import shlex
-            l = list(shlex(args, ','))
-            print(l)
+            lb, rb = args.find('{'), args.find('}')
+            d = None
+            if args[lb:rb + 1] != '':
+                d = eval(args[lb:rb + 1])
+            l = args.split(',', 1)
+            objid, args = l[0].strip('"'), l[1]
+            if d and type(d) is dict:
+                self.handle_dict(clsname, objid, d)
+            else:
+                from shlex import shlex
+                args = args.replace(',', ' ', 1)
+                l = list(shlex(args))
+                l[0] = l[0].strip('"')
+                self.do_update(" ".join([clsname, objid, l[0], l[1]]))
+
+    def handle_dict(self, clsname, objid, d):
+        """handle dictionary update"""
+        for k, v in d.items():
+            self.do_update(" ".join([clsname, objid, k, v]))
 
     def postloop(self):
         """print new line after each loop"""
