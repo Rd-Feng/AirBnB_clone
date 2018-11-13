@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-import json
 """File Storage Class"""
+import json
 
 
 class FileStorage:
@@ -19,8 +19,8 @@ class FileStorage:
         type(self).__objects[k] = obj
 
     def save(self):
-        """ save the objects dictionary into file """
-        """ make serializable dict objects """
+        """ save the objects dictionary into file
+        make serializable dict objects """
         temp = {}
         for k, v in type(self).__objects.items():
             temp[k] = v.to_dict()
@@ -28,6 +28,7 @@ class FileStorage:
             f.write(json.dumps(temp) + '\n')
 
     def reload(self):
+        """reload objects from file"""
         from ..base_model import BaseModel
         from ..state import State
         from ..city import City
