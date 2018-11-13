@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 '''Base Model Module'''
 
-from . import storage
+import models
 from uuid import uuid4
 from datetime import datetime
 
@@ -23,7 +23,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datenow
             self.updated_at = datenow
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """String representation"""
@@ -33,7 +33,7 @@ class BaseModel:
     def save(self):
         """Updates the updated_at public instance attribute"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Convert object to dictionary representation"""
