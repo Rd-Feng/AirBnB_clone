@@ -1,7 +1,46 @@
 # AirBnB Clone
 This project aim to make a clone of the AirBnB from scratch, in few steps. Please stay tuned to the repo for update.<hr/>
+
 # Step 1: Write a command interpreter (Console)
-This console will be used to do CRUD operations (Create, Read, Update, Delete) on our AirBnB objects (User, City, Review, etc.). These models will be listed in the later section.<br/>
+This console is written in Python3, and will be used to do CRUD operations (Create, Read, Update, Delete) on our AirBnB objects (User, City, Review, etc.). More information on the models will be described in the later section.<br/>
+
+### Models:<br/>
+At the moment, we have 7 models: BaseModel, User, State, City, Amenity, Place, and Review, each instance of which is given:
+* a unique id generated using `uuid` package
+* the attribute `created_at`, a `datetime` object, indicating when the object is created
+* the attribute `updated_at`, a `datetime` object, indicating when the object is last updated
+* the attribute `__class__`, a `str` object, indicating what is the object's type (model)
+
+Other attributes will be given based on the model:
+* User
+  + first_name: `str` object
+  + last_name: `str` object
+  + password: `str` object
+  + email: `str`
+* State
+  + name: `str` object
+* City
+  + state_id: `str` object
+  + name: `str` object
+* Amenity
+  + name: `str` object
+* Place
+  + city_id: `str` object
+  + user_id: `str` object
+  + name: `str` object
+  + description: `str` object
+  + number_rooms: `int` object
+  + number_bathrooms: `int` object
+  + max_guest: `int` object
+  + price_by_night: `int` object
+  + latitude: `float` object
+  + longitude: `float` object
+  + amenity_ids: `list` object
+* Review
+  + place_id: `str` object
+  + user_id: `str` object
+  + text: `str object
+
 ### Usage:<br/>
 Run `./console` at the root directory of the repo to start the console<br/>
 ### Commands:
@@ -17,3 +56,4 @@ Display an of type `type` with id `object id`<br/><br/>
 Display all objects of type `type`. If `type` is not specified, display all objects.<br/><br/>
 #### `help [command]`
 Show help information of `command`. If `command` is not specified, display all documented commands.
+
