@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Unit Test For User Model'''
+'''Unit Test For Place Model'''
 
 import unittest
 import pep8
@@ -9,28 +9,28 @@ import sys
 import models
 from os import remove
 from os.path import isfile
-from models.user import User
+from models.place import Place
 from datetime import datetime
 
 
-class Test_01_User_Basics(unittest.TestCase):
-    '''Tests If User Meets Basic Specs'''
+class Test_01_Place_Basics(unittest.TestCase):
+    '''Tests If Place Meets Basic Specs'''
 
     def test_01_file_existence(self):
         '''Test if file exists'''
-        self.assertTrue(isfile('models/user.py'),
-                        'Missing user.py file')
+        self.assertTrue(isfile('models/place.py'),
+                        'Missing place.py file')
 
     def test_02_pep8_compliance(self):
         '''Test if file meets pep8 specs'''
         pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/user.py'])
+        result = pep8style.check_files(['models/place.py'])
         self.assertEqual(result.total_errors, 0,
                          "Fails PEP8 compliance")
 
     def test_03_method_existence(self):
         '''Test for method existence'''
-        clsdir = dir(__import__('models').user.User)
+        clsdir = dir(__import__('models').place.Place)
         self.assertIn('__init__', clsdir, "Missing __init__ method")
         self.assertIn('__str__', clsdir, "Missing __str__ method")
         self.assertIn('save', clsdir, "Missing save method")
@@ -40,26 +40,26 @@ class Test_01_User_Basics(unittest.TestCase):
     def test_04_instantiation(self):
         '''Test for failed instantiation'''
         try:
-            obj1 = User()
-            obj2 = User('Test')
-            obj3 = User('id')
-            obj4 = User(888)
-            obj5 = User(id="1234")
-            obj6 = User([1, 'A', 3])
-            obj7 = User({'A': 1, 'B': 2})
-            obj8 = User((2, 'B', 6))
-            obj9 = User({7, 'HI', 10})
-            obj10 = User(None)
-            obj11 = User(-666)
-            obj12 = User(float('nan'))
-            obj13 = User(float('inf'))
-            obj14 = User('')
-            obj15 = User([])
-            obj16 = User([-5])
-            obj17 = User({})
-            obj18 = User({'u': [6, 7]})
+            obj1 = Place()
+            obj2 = Place('Test')
+            obj3 = Place('id')
+            obj4 = Place(888)
+            obj5 = Place(id="1234")
+            obj6 = Place([1, 'A', 3])
+            obj7 = Place({'A': 1, 'B': 2})
+            obj8 = Place((2, 'B', 6))
+            obj9 = Place({7, 'HI', 10})
+            obj10 = Place(None)
+            obj11 = Place(-666)
+            obj12 = Place(float('nan'))
+            obj13 = Place(float('inf'))
+            obj14 = Place('')
+            obj15 = Place([])
+            obj16 = Place([-5])
+            obj17 = Place({})
+            obj18 = Place({'u': [6, 7]})
         except:
-            self.fail("Failed User instantiation")
+            self.fail("Failed Place instantiation")
         finally:
             del obj1
             del obj2
@@ -82,14 +82,14 @@ class Test_01_User_Basics(unittest.TestCase):
 
     def test_05_instance_class_match(self):
         '''Test if instanced object matches class'''
-        obj1 = User()
-        self.assertIsInstance(obj1, User,
-                              "Instanced object is not User class")
+        obj1 = Place()
+        self.assertIsInstance(obj1, Place,
+                              "Instanced object is not Place class")
         del obj1
 
     def test_06_attr_existence(self):
         '''Test for public attribute existence'''
-        obj1 = User()
+        obj1 = Place()
         self.assertIsInstance(obj1.id, str,
                               "Instanced object.id not a string type")
         self.assertIsInstance(obj1.created_at, datetime,
@@ -99,21 +99,35 @@ class Test_01_User_Basics(unittest.TestCase):
         del obj1
 
     def test_07_cls_attr_type(self):
-        '''Test User Class Attribute Types'''
-        obj = User()
-        self.assertIsInstance(type(obj).email, str,
-                              "Error email not str type")
-        self.assertIsInstance(type(obj).password, str,
-                              "Error password not str type")
-        self.assertIsInstance(type(obj).first_name, str,
-                              "Error first_name not str type")
-        self.assertIsInstance(type(obj).last_name, str,
-                              "Error last_name not str type")
+        '''Test Place Class Attribute Types'''
+        obj = Place()
+        self.assertIsInstance(type(obj).city_id, str,
+                              "Error city_id not str type")
+        self.assertIsInstance(type(obj).user_id, str,
+                              "Error user_id not str type")
+        self.assertIsInstance(type(obj).name, str,
+                              "Error name not str type")
+        self.assertIsInstance(type(obj).description, str,
+                              "Error description not str type")
+        self.assertIsInstance(type(obj).number_rooms, int,
+                              "Error number_rooms not int type")
+        self.assertIsInstance(type(obj).number_bathrooms, int,
+                              "Error number_bathrooms not int type")
+        self.assertIsInstance(type(obj).max_guest, int,
+                              "Error max_guest not int type")
+        self.assertIsInstance(type(obj).price_by_night, int,
+                              "Error price_by_night not int type")
+        self.assertIsInstance(type(obj).latitude, float,
+                              "Error latitude not float type")
+        self.assertIsInstance(type(obj).longitude, float,
+                              "Error longitude not float type")
+        self.assertIsInstance(type(obj).amenity_ids, list,
+                              "Error amenity_ids not list type")
         del obj
 
     def test_07_dynamic_attr(self):
         '''Test to dynamically add attributes'''
-        obj1 = User()
+        obj1 = Place()
         try:
             obj1.test1 = 'TEST'
             obj1.test2 = [1, 2, 3]
@@ -167,42 +181,58 @@ class Test_01_User_Basics(unittest.TestCase):
 
     def test_08_class_attr_defaults(self):
         '''Test class attributes'''
-        self.assertEqual(User.email, '',
-                         "Error User class email default not empty")
-        self.assertEqual(User.password, '',
-                         "Error User class password default not empty")
-        self.assertEqual(User.first_name, '',
-                         "Error User class first_name default not empty")
-        self.assertEqual(User.last_name, '',
-                         "Error User class last_name default not empty")
+        self.assertEqual(Place.name, '',
+                         "Error Place class name default not empty")
 
     def test_09_class_attr_assignment(self):
         '''Test class attr assignment'''
-        User.email = 'test@test.test'
-        obj1 = User()
-        self.assertEqual(type(obj1).email, 'test@test.test',
-                         "Error incorrect email assignment")
-        User.password = 'password123'
-        self.assertEqual(type(obj1).password, 'password123',
-                         "Error incorrect password assignment")
-        User.first_name = 'FIRSTname'
-        self.assertEqual(type(obj1).first_name, 'FIRSTname',
-                         "Error incorrect first_name assignment")
-        User.last_name = 'lastNAME'
-        self.assertEqual(type(obj1).last_name, 'lastNAME',
-                         "Error incorrect last_name assignment")
+        Place.city_id = '1111-1111-1111-1111'
+        Place.user_id = '2222-2222-2222-2222'
+        Place.name = 'Best Place on Earth'
+        Place.description = 'Only the best place'
+        Place.number_rooms = 888
+        Place.number_bathrooms = 777
+        Place.max_guest = 999
+        Place.price_by_night = 1212
+        Place.latitude = 123.456
+        Place.longitude = 789.012
+        Place.amenity_ids = ['3333-3333-3333-3333', '4444-4444-4444-4444']
+        obj1 = Place()
+        self.assertEqual(type(obj1).city_id, '1111-1111-1111-1111',
+                         "Error incorrect city_id assignment")
+        self.assertEqual(type(obj1).user_id, '2222-2222-2222-2222',
+                         "Error incorrect user_id assignment")
+        self.assertEqual(type(obj1).name, 'Best Place on Earth',
+                         "Error incorrect name assignment");
+        self.assertEqual(type(obj1).description, 'Only the best place',
+                         "Error incorrect description assignment");
+        self.assertEqual(type(obj1).number_rooms, 888,
+                         "Error incorrect number_rooms assignment");
+        self.assertEqual(type(obj1).number_bathrooms, 777,
+                         "Error incorrect number_bathrooms assignment");
+        self.assertEqual(type(obj1).max_guest, 999,
+                         "Error incorrect max_guest assignment");
+        self.assertEqual(type(obj1).price_by_night, 1212,
+                         "Error incorrect price_by_night assignment");
+        self.assertEqual(type(obj1).latitude, 123.456,
+                         "Error incorrect latitude assignment");
+        self.assertEqual(type(obj1).longitude, 789.012,
+                         "Error incorrect longitutde assignment");
+        self.assertEqual(type(obj1).amenity_ids,
+                         ['3333-3333-3333-3333', '4444-4444-4444-4444'],
+                         "Error incorrect amenity_ids assignment");
         del obj1
 
 
-class Test_02_User_Constuctor(unittest.TestCase):
-    '''Test User Constructor'''
+class Test_02_Place_Constuctor(unittest.TestCase):
+    '''Test Place Constructor'''
 
     @classmethod
     def setUpClass(cls):
         '''Setup Class'''
-        cls.obj1 = User()
-        cls.obj2 = User()
-        cls.obj3 = User()
+        cls.obj1 = Place()
+        cls.obj2 = Place()
+        cls.obj3 = Place()
 
     @classmethod
     def tearDownClass(cls):
@@ -241,20 +271,20 @@ class Test_02_User_Constuctor(unittest.TestCase):
                          "Fail: Different date times")
 
 
-class Test_04_User_Str(unittest.TestCase):
-    '''Test User __str___'''
+class Test_04_Place_Str(unittest.TestCase):
+    '''Test Place __str___'''
 
     @classmethod
     def setUpClass(cls):
         '''Set Up Class'''
-        cls.obj1 = User(id="1234-5678-9012",
+        cls.obj1 = Place(id="1234-5678-9012",
                         created_at="1234-05-06T01:23:45.678901",
                         updated_at="9999-11-11T11:11:22.222222")
-        cls.god1 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        cls.god1 = "[Place] (1234-5678-9012) {'id': '1234-5678-9012',"
         cls.god1 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         cls.god1 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         cls.god1 += " 11, 11, 22, 222222)}"
-        cls.god2 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        cls.god2 = "[Place] (1234-5678-9012) {'id': '1234-5678-9012',"
         cls.god2 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         cls.god2 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         cls.god2 += " 11, 11, 22, 222222)}\n"
@@ -285,7 +315,7 @@ class Test_04_User_Str(unittest.TestCase):
         type(self).obj1.test1 = 'TEST'
         type(self).obj1.test2 = [1, 2, 3]
         out = type(self).obj1.__str__()
-        god1 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        god1 = "[Place] (1234-5678-9012) {'id': '1234-5678-9012',"
         god1 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         god1 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         god1 += " 11, 11, 22, 222222), 'test1': 'TEST', 'test2': [1, 2, 3]}"
@@ -293,13 +323,13 @@ class Test_04_User_Str(unittest.TestCase):
                          "Error improper __str__ output with dynamic attr")
 
 
-class Test_05_User_Save(unittest.TestCase):
-    '''Test User Save Method'''
+class Test_05_Place_Save(unittest.TestCase):
+    '''Test Place Save Method'''
 
     def test_01_save_datetime(self):
         '''Check for update datetime change after save'''
         models.storage.all().clear()
-        obj1 = User()
+        obj1 = Place()
         old_ua = obj1.updated_at
         try:
             obj1.save()
@@ -313,7 +343,7 @@ class Test_05_User_Save(unittest.TestCase):
     def test_02_save_consistency(self):
         '''Check for consistency after save'''
         models.storage.all().clear()
-        obj1 = User()
+        obj1 = Place()
         old = obj1.__dict__.copy()
         try:
             obj1.save()
@@ -327,13 +357,13 @@ class Test_05_User_Save(unittest.TestCase):
         del obj1
 
 
-class Test_06_User_To_Dict(unittest.TestCase):
-    '''Test User To_Dict Method'''
+class Test_06_Place_To_Dict(unittest.TestCase):
+    '''Test Place To_Dict Method'''
 
     def setUp(self):
         '''Set Up'''
-        self.dct1 = User().to_dict()
-        self.dct2 = User().to_dict()
+        self.dct1 = Place().to_dict()
+        self.dct2 = Place().to_dict()
 
     def test_01_is_dict_type(self):
         '''Test to_dict simple'''
@@ -360,7 +390,7 @@ class Test_06_User_To_Dict(unittest.TestCase):
 
     def test_04_classname_value(self):
         '''Test if class name is properly stored'''
-        self.assertEqual('User', self.dct1['__class__'],
+        self.assertEqual('Place', self.dct1['__class__'],
                          "Error incorrect key for BaseModel")
 
     def test_05_different_to_dict(self):

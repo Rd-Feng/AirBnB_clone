@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Unit Test For User Model'''
+'''Unit Test For Amenity Model'''
 
 import unittest
 import pep8
@@ -9,28 +9,28 @@ import sys
 import models
 from os import remove
 from os.path import isfile
-from models.user import User
+from models.amenity import Amenity
 from datetime import datetime
 
 
-class Test_01_User_Basics(unittest.TestCase):
-    '''Tests If User Meets Basic Specs'''
+class Test_01_Amenity_Basics(unittest.TestCase):
+    '''Tests If State Meets Basic Specs'''
 
     def test_01_file_existence(self):
         '''Test if file exists'''
-        self.assertTrue(isfile('models/user.py'),
-                        'Missing user.py file')
+        self.assertTrue(isfile('models/amenity.py'),
+                        'Missing amenity.py file')
 
     def test_02_pep8_compliance(self):
         '''Test if file meets pep8 specs'''
         pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/user.py'])
+        result = pep8style.check_files(['models/amenity.py'])
         self.assertEqual(result.total_errors, 0,
                          "Fails PEP8 compliance")
 
     def test_03_method_existence(self):
         '''Test for method existence'''
-        clsdir = dir(__import__('models').user.User)
+        clsdir = dir(__import__('models').amenity.Amenity)
         self.assertIn('__init__', clsdir, "Missing __init__ method")
         self.assertIn('__str__', clsdir, "Missing __str__ method")
         self.assertIn('save', clsdir, "Missing save method")
@@ -40,26 +40,26 @@ class Test_01_User_Basics(unittest.TestCase):
     def test_04_instantiation(self):
         '''Test for failed instantiation'''
         try:
-            obj1 = User()
-            obj2 = User('Test')
-            obj3 = User('id')
-            obj4 = User(888)
-            obj5 = User(id="1234")
-            obj6 = User([1, 'A', 3])
-            obj7 = User({'A': 1, 'B': 2})
-            obj8 = User((2, 'B', 6))
-            obj9 = User({7, 'HI', 10})
-            obj10 = User(None)
-            obj11 = User(-666)
-            obj12 = User(float('nan'))
-            obj13 = User(float('inf'))
-            obj14 = User('')
-            obj15 = User([])
-            obj16 = User([-5])
-            obj17 = User({})
-            obj18 = User({'u': [6, 7]})
+            obj1 = Amenity()
+            obj2 = Amenity('Test')
+            obj3 = Amenity('id')
+            obj4 = Amenity(888)
+            obj5 = Amenity(id="1234")
+            obj6 = Amenity([1, 'A', 3])
+            obj7 = Amenity({'A': 1, 'B': 2})
+            obj8 = Amenity((2, 'B', 6))
+            obj9 = Amenity({7, 'HI', 10})
+            obj10 = Amenity(None)
+            obj11 = Amenity(-666)
+            obj12 = Amenity(float('nan'))
+            obj13 = Amenity(float('inf'))
+            obj14 = Amenity('')
+            obj15 = Amenity([])
+            obj16 = Amenity([-5])
+            obj17 = Amenity({})
+            obj18 = Amenity({'u': [6, 7]})
         except:
-            self.fail("Failed User instantiation")
+            self.fail("Failed Amenity instantiation")
         finally:
             del obj1
             del obj2
@@ -82,14 +82,14 @@ class Test_01_User_Basics(unittest.TestCase):
 
     def test_05_instance_class_match(self):
         '''Test if instanced object matches class'''
-        obj1 = User()
-        self.assertIsInstance(obj1, User,
-                              "Instanced object is not User class")
+        obj1 = Amenity()
+        self.assertIsInstance(obj1, Amenity,
+                              "Instanced object is not Amenity class")
         del obj1
 
     def test_06_attr_existence(self):
         '''Test for public attribute existence'''
-        obj1 = User()
+        obj1 = Amenity()
         self.assertIsInstance(obj1.id, str,
                               "Instanced object.id not a string type")
         self.assertIsInstance(obj1.created_at, datetime,
@@ -99,21 +99,15 @@ class Test_01_User_Basics(unittest.TestCase):
         del obj1
 
     def test_07_cls_attr_type(self):
-        '''Test User Class Attribute Types'''
-        obj = User()
-        self.assertIsInstance(type(obj).email, str,
-                              "Error email not str type")
-        self.assertIsInstance(type(obj).password, str,
-                              "Error password not str type")
-        self.assertIsInstance(type(obj).first_name, str,
-                              "Error first_name not str type")
-        self.assertIsInstance(type(obj).last_name, str,
-                              "Error last_name not str type")
+        '''Test Amenity Class Attribute Types'''
+        obj = Amenity()
+        self.assertIsInstance(type(obj).name, str,
+                              "Error name not str type")
         del obj
 
     def test_07_dynamic_attr(self):
         '''Test to dynamically add attributes'''
-        obj1 = User()
+        obj1 = Amenity()
         try:
             obj1.test1 = 'TEST'
             obj1.test2 = [1, 2, 3]
@@ -167,42 +161,27 @@ class Test_01_User_Basics(unittest.TestCase):
 
     def test_08_class_attr_defaults(self):
         '''Test class attributes'''
-        self.assertEqual(User.email, '',
-                         "Error User class email default not empty")
-        self.assertEqual(User.password, '',
-                         "Error User class password default not empty")
-        self.assertEqual(User.first_name, '',
-                         "Error User class first_name default not empty")
-        self.assertEqual(User.last_name, '',
-                         "Error User class last_name default not empty")
+        self.assertEqual(Amenity.name, '',
+                         "Error Amenity class name default not empty")
 
     def test_09_class_attr_assignment(self):
         '''Test class attr assignment'''
-        User.email = 'test@test.test'
-        obj1 = User()
-        self.assertEqual(type(obj1).email, 'test@test.test',
-                         "Error incorrect email assignment")
-        User.password = 'password123'
-        self.assertEqual(type(obj1).password, 'password123',
-                         "Error incorrect password assignment")
-        User.first_name = 'FIRSTname'
-        self.assertEqual(type(obj1).first_name, 'FIRSTname',
-                         "Error incorrect first_name assignment")
-        User.last_name = 'lastNAME'
-        self.assertEqual(type(obj1).last_name, 'lastNAME',
-                         "Error incorrect last_name assignment")
+        Amenity.name = 'Pool'
+        obj1 = Amenity()
+        self.assertEqual(type(obj1).name, 'Pool',
+                         "Error incorrect name assignment")
         del obj1
 
 
-class Test_02_User_Constuctor(unittest.TestCase):
-    '''Test User Constructor'''
+class Test_02_Amenity_Constuctor(unittest.TestCase):
+    '''Test Amenity Constructor'''
 
     @classmethod
     def setUpClass(cls):
         '''Setup Class'''
-        cls.obj1 = User()
-        cls.obj2 = User()
-        cls.obj3 = User()
+        cls.obj1 = Amenity()
+        cls.obj2 = Amenity()
+        cls.obj3 = Amenity()
 
     @classmethod
     def tearDownClass(cls):
@@ -241,20 +220,20 @@ class Test_02_User_Constuctor(unittest.TestCase):
                          "Fail: Different date times")
 
 
-class Test_04_User_Str(unittest.TestCase):
-    '''Test User __str___'''
+class Test_04_Amenity_Str(unittest.TestCase):
+    '''Test Amenity __str___'''
 
     @classmethod
     def setUpClass(cls):
         '''Set Up Class'''
-        cls.obj1 = User(id="1234-5678-9012",
+        cls.obj1 = Amenity(id="1234-5678-9012",
                         created_at="1234-05-06T01:23:45.678901",
                         updated_at="9999-11-11T11:11:22.222222")
-        cls.god1 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        cls.god1 = "[Amenity] (1234-5678-9012) {'id': '1234-5678-9012',"
         cls.god1 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         cls.god1 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         cls.god1 += " 11, 11, 22, 222222)}"
-        cls.god2 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        cls.god2 = "[Amenity] (1234-5678-9012) {'id': '1234-5678-9012',"
         cls.god2 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         cls.god2 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         cls.god2 += " 11, 11, 22, 222222)}\n"
@@ -285,7 +264,7 @@ class Test_04_User_Str(unittest.TestCase):
         type(self).obj1.test1 = 'TEST'
         type(self).obj1.test2 = [1, 2, 3]
         out = type(self).obj1.__str__()
-        god1 = "[User] (1234-5678-9012) {'id': '1234-5678-9012',"
+        god1 = "[Amenity] (1234-5678-9012) {'id': '1234-5678-9012',"
         god1 += " 'created_at': datetime.datetime(1234, 5, 6, 1, 23, 45,"
         god1 += " 678901), 'updated_at': datetime.datetime(9999, 11, 11,"
         god1 += " 11, 11, 22, 222222), 'test1': 'TEST', 'test2': [1, 2, 3]}"
@@ -293,13 +272,13 @@ class Test_04_User_Str(unittest.TestCase):
                          "Error improper __str__ output with dynamic attr")
 
 
-class Test_05_User_Save(unittest.TestCase):
-    '''Test User Save Method'''
+class Test_05_Amenity_Save(unittest.TestCase):
+    '''Test Amenity Save Method'''
 
     def test_01_save_datetime(self):
         '''Check for update datetime change after save'''
         models.storage.all().clear()
-        obj1 = User()
+        obj1 = Amenity()
         old_ua = obj1.updated_at
         try:
             obj1.save()
@@ -313,7 +292,7 @@ class Test_05_User_Save(unittest.TestCase):
     def test_02_save_consistency(self):
         '''Check for consistency after save'''
         models.storage.all().clear()
-        obj1 = User()
+        obj1 = Amenity()
         old = obj1.__dict__.copy()
         try:
             obj1.save()
@@ -327,13 +306,13 @@ class Test_05_User_Save(unittest.TestCase):
         del obj1
 
 
-class Test_06_User_To_Dict(unittest.TestCase):
-    '''Test User To_Dict Method'''
+class Test_06_Amenity_To_Dict(unittest.TestCase):
+    '''Test Amenity To_Dict Method'''
 
     def setUp(self):
         '''Set Up'''
-        self.dct1 = User().to_dict()
-        self.dct2 = User().to_dict()
+        self.dct1 = Amenity().to_dict()
+        self.dct2 = Amenity().to_dict()
 
     def test_01_is_dict_type(self):
         '''Test to_dict simple'''
@@ -360,7 +339,7 @@ class Test_06_User_To_Dict(unittest.TestCase):
 
     def test_04_classname_value(self):
         '''Test if class name is properly stored'''
-        self.assertEqual('User', self.dct1['__class__'],
+        self.assertEqual('Amenity', self.dct1['__class__'],
                          "Error incorrect key for BaseModel")
 
     def test_05_different_to_dict(self):
