@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """File Storage Class"""
+
 import json
 from models.base_model import BaseModel
 from models.state import State
