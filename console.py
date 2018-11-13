@@ -30,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class doesn\'t exist **')
         else:
             obj = self.clslist[clsname]()
-            obj.save()
+            models.storage.save()
             print(obj.id)
 
     def do_show(self, arg):
@@ -123,10 +123,11 @@ class HBNBCommand(cmd.Cmd):
             if not obj:
                 print('** no instance found **')
             else:
-                obj.__setattr__(attrname,
-                                type(getattr(obj, attrname))(attrval))
+                if hasattr(obj, attrname):
+                    attrval = type(getattr(obj, attrname))(attrval)
+                setattr(obj, attrname, attrval)
                 obj.updated_at = updatetime
-                obj.save()
+                models.storage.save()
 
     def do_quit(self, arg):
         """Quit command to exit the program
