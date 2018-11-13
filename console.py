@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
         elif not self.clslist.get(clsname):
             print("** class doesn't exist **")
         else:
-            k = clsname + "." + objid;
+            k = clsname + "." + objid
             obj = models.storage.all().get(k)
             if not obj:
                 print('** no instance found **')
@@ -71,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
         elif not self.clslist.get(clsname):
             print("** class doesn't exist **")
         else:
-            k = clsname + "." + objid;
+            k = clsname + "." + objid
             obj = models.storage.all().get(k)
             if not obj:
                 print('** no instance found **')
@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         elif not self.clslist.get(clsname):
             print("** class doesn't exist **")
         else:
-            k = clsname + "." + objid;
+            k = clsname + "." + objid
             obj = models.storage.all().get(k)
             if not obj:
                 print('** no instance found **')
