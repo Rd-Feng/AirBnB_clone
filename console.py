@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 print('** no instance found **')
             else:
                 obj.__setattr__(attrname,
-                                type(obj.__getattribute__(attrname))(attrval))
+                                type(getattr(obj, attrname))(attrval))
                 obj.updated_at = updatetime
                 obj.save()
 
@@ -165,7 +165,6 @@ class HBNBCommand(cmd.Cmd):
         elif mthname == 'destroy':
             self.do_destroy(clsname + " " + args.strip('"'))
         elif mthname == 'update':
-            return False
             from shlex import shlex
             l = list(shlex(args, ','))
             print(l)
