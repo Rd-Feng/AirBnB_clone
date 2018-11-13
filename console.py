@@ -125,6 +125,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if hasattr(obj, attrname):
                     attrval = type(getattr(obj, attrname))(attrval)
+                else:
+                    attrval = self.getType(attrval)(attrval)
                 setattr(obj, attrname, attrval)
                 obj.updated_at = updatetime
                 models.storage.save()
@@ -179,6 +181,7 @@ class HBNBCommand(cmd.Cmd):
                 args = args.replace(',', ' ', 1)
                 l = list(shlex(args))
                 l[0] = l[0].strip('"')
+                print(l[1], type(l[1]))
                 self.do_update(" ".join([clsname, objid, l[0], l[1]]))
 
     def handle_dict(self, clsname, objid, d):
@@ -198,6 +201,21 @@ class HBNBCommand(cmd.Cmd):
             if type(v).__name__ == clsname:
                 c += 1
         return (c)
+
+    @staticmethod
+    def getType(attrval):
+        """return the type of the input string"""
+        try:
+            int(attrval)
+            return (int)
+        except ValueError:
+            pass
+        try:
+            float(attrval)
+            return (float)
+        except ValueError:
+            return (str)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
