@@ -208,6 +208,10 @@ class Test_04_Save_Method(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
+        try:
+            remove('file.json')
+        except:
+            pass
         cls.fs_o = FS()
         b_o = BM()
         u_o = User()
@@ -290,6 +294,10 @@ class Test_05_Reload_Method(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
+        try:
+            remove('file.json')
+        except:
+            pass
         cls.fs_o = FS()
         b_o = BM()
         u_o = User()
@@ -336,9 +344,99 @@ class Test_05_Reload_Method(unittest.TestCase):
             cls, uid = k.split('.')[0], k.split('.')[1]
             self.assertIn(cls, clslist,
                           "Error improperly reloaded file")
+            test = baseattr.copy()
             for e in v.__dict__.keys():
                 self.assertIn(e, baseattr,
                               "Error improperly reloaded file")
+                test.remove(e)
+            self.assertEqual(test, [],
+                             "Error imroperly reloaded file")
+            self.assertIsInstance(v.id, str,
+                                  "Error improperly reloaded file")
+            self.assertIsInstance(v.created_at, datetime,
+                                  "Error improperly reloaded file")
+            self.assertIsInstance(v.updated_at, datetime,
+                                  "Error improperly reloaded file")
+            self.assertEqual(uid, v.id,
+                             "Error improperly reloaded file")
+
+
+class Test_06_Avanced(unittest.TestCase):
+    '''Test FileStorage with Dynamically Added Attr'''
+
+    @classmethod
+    def setUpClass(cls):
+        '''Set Stuff Up for Class'''
+        cls.fs_o = FS()
+
+    @classmethod
+    def tearDownClass(cls):
+        '''Tear Stuff Down for Class'''
+        cls.fs_o._FileStorage__objects.clear()
+        del cls.fs_o
+        try:
+            remove('file.json')
+        except:
+            pass
+
+    def test_01_new_obj(self):
+        '''Test new obj with dynamic attr'''
+        b_o = BM()
+        u_o = User()
+        s_o = State()
+        c_o = City()
+        a_o = Amty()
+        p_o = Place()
+        r_o = Rvw()
+        b_o.test = 'WUT'
+        u_o.test = 777
+        s_o.test = None
+        c_o.test = float('nan')
+        a_o.test = {'test': '5'}
+        p_o.test = ['y', 5, []]
+        r_o.test = {}
+        try:
+            type(self).fs_o.new(b_o)
+            type(self).fs_o.new(u_o)
+            type(self).fs_o.new(s_o)
+            type(self).fs_o.new(c_o)
+            type(self).fs_o.new(a_o)
+            type(self).fs_o.new(p_o)
+            type(self).fs_o.new(r_o)
+        except:
+            self.fail("Failed to add objects with dynamic attr")
+
+    def test_02_save(self):
+        '''Test save on obj with dynamic attr'''
+        try:
+            type(self).fs_o.save()
+        except:
+            self.fail("Failed to save file")
+
+    def test_03_reload(self):
+        '''Test reload on obj with dynamic attr'''
+        type(self).fs_o._FileStorage__objects.clear()
+        try:
+            type(self).fs_o.reload()
+        except:
+            self.fail("Failed to reload file")
+        clslist = ['BaseModel', 'User', 'Place', 'City', 'State', 'Amenity',
+                   'City', 'Review']
+        baseattr = ['id', 'created_at', 'updated_at', 'test']
+        data = type(self).fs_o._FileStorage__objects
+        self.assertEqual(len(data), 7,
+                         "Error improperly reloaded file")
+        for k, v in data.items():
+            cls, uid = k.split('.')[0], k.split('.')[1]
+            self.assertIn(cls, clslist,
+                          "Error improperly reloaded file")
+            test = baseattr.copy()
+            for e in v.__dict__.keys():
+                self.assertIn(e, baseattr,
+                              "Error improperly reloaded file")
+                test.remove(e)
+            self.assertEqual(test, [],
+                             "Error imroperly reloaded file")
             self.assertIsInstance(v.id, str,
                                   "Error improperly reloaded file")
             self.assertIsInstance(v.created_at, datetime,
