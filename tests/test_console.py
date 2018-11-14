@@ -51,11 +51,11 @@ class Test_01_Basic(unittest.TestCase):
         return "".join(map(lambda c: c[0][0],
                            self.mock_stdout.write.call_args_list[-nr:]))
 
-    def test_noinput(self):
+    def test_01_noinput(self):
         self.assertFalse(self.c.onecmd("\n"))
         self.assertEqual('', self.out.getvalue())
 
-    def test_quit(self):
+    def test_02_quit(self):
         """test quit command"""
         self.assertTrue(self.c.onecmd("quit"))
         self.assertTrue(self.c.onecmd("quit some random arguments"))
@@ -63,14 +63,14 @@ class Test_01_Basic(unittest.TestCase):
         self.assertEqual('*** Unknown syntax: Quit\n', self.out.getvalue())
         self.clearIO()
 
-    def test_EOF(self):
+    def test_03_EOF(self):
         """test EOF"""
         self.assertTrue(self.c.onecmd("EOF"))
         self.assertFalse(self.c.onecmd("eof"))
         self.assertEqual('*** Unknown syntax: eof\n', self.out.getvalue())
         self.clearIO()
 
-    def test_create_fail(self):
+    def test_04_create_fail(self):
         """test create"""
         self.assertFalse(self.c.onecmd('create'))
         self.assertEqual('** class name missing **\n', self.out.getvalue())
@@ -79,7 +79,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
         self.clearIO()
 
-    def test_creat_success(self):
+    def test_05_creat_success(self):
         """test create success case
         check if output is a valid uuid"""
         self.assertFalse(self.c.onecmd('create BaseModel'))
@@ -94,7 +94,7 @@ class Test_01_Basic(unittest.TestCase):
             testRes = False
         self.assertTrue(testRes)
 
-    def test_all_no_arg(self):
+    def test_06_all_no_arg(self):
         """test all command with no arg"""
         self.assertFalse(self.c.onecmd('all'))
         self.assertEqual('[]\n', self.out.getvalue())
@@ -120,7 +120,7 @@ class Test_01_Basic(unittest.TestCase):
         for e in l:
             self.assertIsInstance(e, str)
 
-    def test_all_with_arg(self):
+    def test_07_all_with_arg(self):
         """test all command with arg"""
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create BaseModel'))
@@ -147,7 +147,7 @@ class Test_01_Basic(unittest.TestCase):
         self.clearIO()
         self.assertEqual(l, [])
 
-    def test_update_not_enough_arg(self):
+    def test_08_update_not_enough_arg(self):
         """test update cmd fail on not enough arguments"""
         self.assertFalse(self.c.onecmd('update'))
         self.assertEqual('** class name missing **\n', self.out.getvalue())
@@ -161,7 +161,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertFalse(self.c.onecmd('update something someid someattr'))
         self.assertEqual("** value missing **\n", self.out.getvalue())
 
-    def test_update_wrong_arg(self):
+    def test_09_update_wrong_arg(self):
         """test update fail on wrong arg"""
         self.assertFalse(self.c.onecmd('update something someid atname atval'))
         self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
@@ -170,7 +170,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertEqual("** no instance found **\n", self.out.getvalue())
         self.clearIO()
 
-    def test_update_newattr(self):
+    def test_10_update_newattr(self):
         """test adding attribute to object"""
         self.c.onecmd('create BaseModel')
         objid = self.out.getvalue()[:-1]
@@ -191,7 +191,7 @@ class Test_01_Basic(unittest.TestCase):
         self.c.onecmd('all BaseModel')
         self.assertTrue("'number': 5.0" in self.out.getvalue())
 
-    def test_update_default_attr(self):
+    def test_11_update_default_attr(self):
         """test update cmd on existing attribute"""
         self.c.onecmd('create Place')
         objid = self.out.getvalue()[:-1]
@@ -215,7 +215,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertTrue("'max_guest': 5" in self.out.getvalue())
         self.clearIO()
 
-    def test_update_too_many_arg(self):
+    def test_12_update_too_many_arg(self):
         """test update cmd on too many arguments"""
         self.c.onecmd('create BaseModel')
         objid = self.out.getvalue()[:-1]
@@ -227,7 +227,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertTrue("'number': 16.0" not in self.out.getvalue())
         self.clearIO()
 
-    def test_show_fail(self):
+    def test_13_show_fail(self):
         """test show fail"""
         self.c.onecmd('create BaseModel')
         bmid = self.out.getvalue()[:-1]
@@ -252,7 +252,7 @@ class Test_01_Basic(unittest.TestCase):
         self.assertEqual("** no instance found **\n", self.out.getvalue())
         self.clearIO()
 
-    def test_show_success(self):
+    def test_14_show_success(self):
         """test show success"""
         self.c.onecmd('create BaseModel')
         bmid = self.out.getvalue()[:-1]
@@ -266,6 +266,48 @@ class Test_01_Basic(unittest.TestCase):
         self.clearIO()
         self.assertFalse(self.c.onecmd('show User ' + usid))
         self.assertTrue(usid in self.out.getvalue())
+        self.clearIO()
+
+    def test_15_destroy_fail(self):
+        """test destroy fail"""
+        self.c.onecmd('create BaseModel')
+        bmid = self.out.getvalue()[:-1]
+        self.c.onecmd('create BaseModel')
+        self.clearIO()
+        self.c.onecmd('create User')
+        usid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy'))
+        self.assertEqual("** class name missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy something'))
+        self.assertEqual("** instance id missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy something someid'))
+        self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy BaseModel 1234'))
+        self.assertEqual("** no instance found **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy BaseModel ' + usid))
+        self.assertEqual("** no instance found **\n", self.out.getvalue())
+        self.clearIO()
+
+    def test_16_destroy_success(self):
+        """test destroy success cases"""
+        self.c.onecmd('create BaseModel')
+        bmid = self.out.getvalue()[:-1]
+        self.c.onecmd('create BaseModel')
+        self.clearIO()
+        self.c.onecmd('create User')
+        usid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy BaseModel ' + bmid))
+        self.c.onecmd('all BaseModel')
+        self.assertFalse(bmid in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('destroy User ' + usid))
+        self.assertFalse(usid in self.out.getvalue())
         self.clearIO()
 
     @staticmethod
