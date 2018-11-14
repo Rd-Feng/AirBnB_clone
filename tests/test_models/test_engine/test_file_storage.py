@@ -9,7 +9,7 @@ import sys
 import json
 from os import remove
 from os.path import isfile
-from models.engine.file_storage import FileStorage as FS
+from models.engine.file_storage import FileStorage
 from datetime import datetime
 from models.base_model import BaseModel as BM
 from models.user import User
@@ -49,7 +49,7 @@ def setUpModule():
     except:
         pass
     try:
-        FS._FileStorage__objects.clear()
+        FileStorage._FileStorage__objects.clear()
     except:
         pass
 
@@ -61,7 +61,7 @@ def tearDownModule():
     except:
         pass
     try:
-        FS._FileStorage__objects.clear()
+        FileStorage._FileStorage__objects.clear()
     except:
         pass
 
@@ -92,19 +92,19 @@ class Test_01_FileStorage_Basics(unittest.TestCase):
     def test_04_class_attr_existence_type(self):
         '''Test for class existence and type'''
         try:
-            self.assertIsInstance(FS._FileStorage__file_path, str,
+            self.assertIsInstance(FileStorage._FileStorage__file_path, str,
                                   "Error __file_path not str")
         except:
             self.fail("Missing private class attribute __file_path")
         try:
-            self.assertIsInstance(FS._FileStorage__objects, dict,
+            self.assertIsInstance(FileStorage._FileStorage__objects, dict,
                                   "Error __object not dictionary")
         except:
             self.fail("Missing private class attribute __object")
 
     def test_05_class_attr_defaults(self):
         '''Test class attribute default values'''
-        testFS = FS()
+        testFS = FileStorage()
         self.assertEqual(testFS._FileStorage__file_path, "file.json",
                          "Error default __file_path not 'file.json'")
         self.assertFalse(testFS._FileStorage__objects,
@@ -118,7 +118,7 @@ class Test_02_New_Method(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
-        cls.fs_o = FS()
+        cls.fs_o = FileStorage()
 
     @classmethod
     def tearDownClass(cls):
@@ -163,7 +163,7 @@ class Test_03_All_Method(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Set Up Stuff for Class'''
-        cls.fs_o = FS()
+        cls.fs_o = FileStorage()
         b_o = BM()
         u_o = User()
         s_o = State()
@@ -212,7 +212,7 @@ class Test_04_Save_Method(unittest.TestCase):
             remove('file.json')
         except:
             pass
-        cls.fs_o = FS()
+        cls.fs_o = FileStorage()
         b_o = BM()
         u_o = User()
         s_o = State()
@@ -298,7 +298,7 @@ class Test_05_Reload_Method(unittest.TestCase):
             remove('file.json')
         except:
             pass
-        cls.fs_o = FS()
+        cls.fs_o = FileStorage()
         b_o = BM()
         u_o = User()
         s_o = State()
@@ -367,7 +367,7 @@ class Test_06_Avanced(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
-        cls.fs_o = FS()
+        cls.fs_o = FileStorage()
 
     @classmethod
     def tearDownClass(cls):
