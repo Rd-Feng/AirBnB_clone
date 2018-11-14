@@ -147,18 +147,126 @@ class Test_01_Basic(unittest.TestCase):
         self.clearIO()
         self.assertEqual(l, [])
 
-    def test_update_fail(self):
-        """test update cmd fail"""
+    def test_update_not_enough_arg(self):
+        """test update cmd fail on not enough arguments"""
         self.assertFalse(self.c.onecmd('update'))
         self.assertEqual('** class name missing **\n', self.out.getvalue())
         self.clearIO()
         self.assertFalse(self.c.onecmd('update something'))
+        self.assertEqual("** instance id missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('update something someid'))
+        self.assertEqual("** attribute name missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('update something someid someattr'))
+        self.assertEqual("** value missing **\n", self.out.getvalue())
+
+    def test_update_wrong_arg(self):
+        """test update fail on wrong arg"""
+        self.assertFalse(self.c.onecmd('update something someid atname atval'))
         self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
         self.clearIO()
-        self.assertFalse(self.c.onecmd('update BaseModel'))
-        self.assertEqual("** class id missing **\n", self.out.getvalue())
+        self.assertFalse(self.c.onecmd('update BaseModel someid atname atval'))
+        self.assertEqual("** no instance found **\n", self.out.getvalue())
         self.clearIO()
 
+    def test_update_newattr(self):
+        """test adding attribute to object"""
+        self.c.onecmd('create BaseModel')
+        objid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update BaseModel ' + objid +
+                          ' first_name  "Betty"'))
+        self.c.onecmd('all BaseModel')
+        self.assertTrue("'first_name': 'Betty'" in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update BaseModel ' + objid + ' age  "16"'))
+        self.c.onecmd('all BaseModel')
+        self.assertTrue("'age': 16" in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update BaseModel ' + objid + ' number  "5.0"'))
+        self.c.onecmd('all BaseModel')
+        self.assertTrue("'number': 5.0" in self.out.getvalue())
+
+    def test_update_default_attr(self):
+        """test update cmd on existing attribute"""
+        self.c.onecmd('create Place')
+        objid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update Place ' + objid +
+                          ' name  "San Francisco"'))
+        self.c.onecmd('all Place')
+        self.assertTrue("'name': 'San Francisco'" in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update Place ' + objid +
+                          ' latitude  "90.0"'))
+        self.c.onecmd('all Place')
+        self.assertTrue("'latitude': 90.0" in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update Place ' + objid +
+                          ' max_guest  "5"'))
+        self.c.onecmd('all Place')
+        self.assertTrue("'max_guest': 5" in self.out.getvalue())
+        self.clearIO()
+
+    def test_update_too_many_arg(self):
+        """test update cmd on too many arguments"""
+        self.c.onecmd('create BaseModel')
+        objid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(
+            self.c.onecmd('update BaseModel ' + objid + ' age  "16"' +
+                          'number "15.0"'))
+        self.c.onecmd('all BaseModel')
+        self.assertTrue("'number': 16.0" not in self.out.getvalue())
+        self.clearIO()
+
+    def test_show_fail(self):
+        """test show fail"""
+        self.c.onecmd('create BaseModel')
+        bmid = self.out.getvalue()[:-1]
+        self.c.onecmd('create BaseModel')
+        self.clearIO()
+        self.c.onecmd('create User')
+        usid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show'))
+        self.assertEqual("** class name missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show something'))
+        self.assertEqual("** instance id missing **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show something someid'))
+        self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show BaseModel 1234'))
+        self.assertEqual("** no instance found **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show BaseModel ' + usid))
+        self.assertEqual("** no instance found **\n", self.out.getvalue())
+        self.clearIO()
+
+    def test_show_success(self):
+        """test show success"""
+        self.c.onecmd('create BaseModel')
+        bmid = self.out.getvalue()[:-1]
+        self.c.onecmd('create BaseModel')
+        self.clearIO()
+        self.c.onecmd('create User')
+        usid = self.out.getvalue()[:-1]
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show BaseModel ' + bmid))
+        self.assertTrue(bmid in self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('show User ' + usid))
+        self.assertTrue(usid in self.out.getvalue())
+        self.clearIO()
 
     @staticmethod
     def checkObjStrType(e, t):
