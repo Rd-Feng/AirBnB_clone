@@ -33,6 +33,8 @@ class Test_01_Basic(unittest.TestCase):
             remove('file.json')
         except:
             pass
+        models.storage._FileStorage__objects.clear()
+        self.clearIO()
 
     def clearIO(self):
         self.out.truncate(0)
@@ -106,9 +108,62 @@ class Test_01_Basic(unittest.TestCase):
         self.assertEqual(len(l), 1)
         for e in l:
             self.assertIsInstance(e, str)
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.assertFalse(self.c.onecmd('create State'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('all'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(l, list)
+        self.assertEqual(len(l), 4)
+        for e in l:
+            self.assertIsInstance(e, str)
 
     def test_all_with_arg(self):
         """test all command with arg"""
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('all BaseModel'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(l, list)
+        self.assertEqual(len(l), 2)
+        for e in l:
+            self.assertIsInstance(e, str)
+            self.assertTrue(self.checkObjStrType(e, 'BaseModel'))
+        self.assertFalse(self.c.onecmd('all User'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(l, list)
+        self.assertEqual(len(l), 1)
+        for e in l:
+            self.assertIsInstance(e, str)
+            self.assertTrue(self.checkObjStrType(e, 'User'))
+        self.assertFalse(self.c.onecmd('all Amenity'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, [])
+
+    def test_update_fail(self):
+        """test update cmd fail"""
+        self.assertFalse(self.c.onecmd('update'))
+        self.assertEqual('** class name missing **\n', self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('update something'))
+        self.assertEqual("** class doesn't exist **\n", self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('update BaseModel'))
+        self.assertEqual("** class id missing **\n", self.out.getvalue())
+        self.clearIO()
+
+
+    @staticmethod
+    def checkObjStrType(e, t):
+        """check if e is a string representation of type 't'"""
+        return (e[e.find('['): e.find(']') + 1] == '[' + t + ']')
 
 if __name__ == '__main__':
     unittest.main()
