@@ -445,3 +445,7 @@ class Test_06_Avanced(unittest.TestCase):
                                   "Error improperly reloaded file")
             self.assertEqual(uid, v.id,
                              "Error improperly reloaded file")
+
+
+if __name__ == '__main__':
+    unittest.main()
