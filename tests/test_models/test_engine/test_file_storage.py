@@ -249,44 +249,6 @@ class Test_04_Save_Method(unittest.TestCase):
         '''Test if save file exists'''
         self.assertTrue(isfile('file.json'), "Error missing file.json file")
 
-    def test_03_file_read(self):
-        '''Test file contents'''
-        filename = type(self).fs_o._FileStorage__file_path
-        try:
-            with open(filename, 'r', encoding='utf-8') as f:
-                data = json.loads(f.readline())
-        except:
-            self.fail("Failed to read from file")
-        self.assertIsInstance(data, dict,
-                              "Error data not saved for json conversion")
-        self.assertEqual(len(data), 7,
-                         "Error incorrect number of items written to file")
-        for k, v in data.items():
-            cls1, uid1 = k.split('.')[0], k.split('.')[1]
-            try:
-                cls2 = v['__class__']
-                uid2 = v['id']
-            except:
-                self.fail("Error file incorrectly written")
-            self.assertEqual(cls1, cls2,
-                             "Error file incorrectly written")
-            self.assertEqual(uid1, uid2,
-                             "Error file incorrectly written")
-            try:
-                raw_dt1 = v['created_at']
-                raw_dt2 = v['updated_at']
-            except:
-                self.fail("Error file incorrectly written")
-            try:
-                dt1 = datetime.strptime(raw_dt1, "%Y-%m-%dT%H:%M:%S.%f")
-                dt2 = datetime.strptime(raw_dt2, "%Y-%m-%dT%H:%M:%S.%f")
-            except:
-                self.fail("Error file incorrectly written")
-            self.assertIsInstance(dt1, datetime,
-                                  "Error file incorrectly written")
-            self.assertIsInstance(dt2, datetime,
-                                  "Error file incorrectly written")
-
 
 class Test_05_Reload_Method(unittest.TestCase):
     '''Test FileStorage Reload Method'''
@@ -332,35 +294,7 @@ class Test_05_Reload_Method(unittest.TestCase):
         except:
             self.fail("Failed to reload file")
 
-    def test_02_reload_properly_loaded(self):
-        '''Test reload properly loaded'''
-        clslist = ['BaseModel', 'User', 'Place', 'City', 'State', 'Amenity',
-                   'City', 'Review']
-        baseattr = ['id', 'created_at', 'updated_at']
-        data = type(self).fs_o._FileStorage__objects
-        self.assertEqual(len(data), 7,
-                         "Error improperly reloaded file")
-        for k, v in data.items():
-            cls, uid = k.split('.')[0], k.split('.')[1]
-            self.assertIn(cls, clslist,
-                          "Error improperly reloaded file")
-            test = baseattr.copy()
-            for e in v.__dict__.keys():
-                self.assertIn(e, baseattr,
-                              "Error improperly reloaded file")
-                test.remove(e)
-            self.assertEqual(test, [],
-                             "Error imroperly reloaded file")
-            self.assertIsInstance(v.id, str,
-                                  "Error improperly reloaded file")
-            self.assertIsInstance(v.created_at, datetime,
-                                  "Error improperly reloaded file")
-            self.assertIsInstance(v.updated_at, datetime,
-                                  "Error improperly reloaded file")
-            self.assertEqual(uid, v.id,
-                             "Error improperly reloaded file")
-
-    def test_03_reload_with_no_file(self):
+    def test_02_reload_with_no_file(self):
         '''Test reload with no file '''
         remove(type(self).fs_o._FileStorage__file_path)
         try:
@@ -420,39 +354,6 @@ class Test_06_Advanced(unittest.TestCase):
             type(self).fs_o.save()
         except:
             self.fail("Failed to save file")
-
-    def test_03_reload(self):
-        '''Test reload on obj with dynamic attr'''
-        type(self).fs_o._FileStorage__objects.clear()
-        try:
-            type(self).fs_o.reload()
-        except:
-            self.fail("Failed to reload file")
-        clslist = ['BaseModel', 'User', 'Place', 'City', 'State', 'Amenity',
-                   'City', 'Review']
-        baseattr = ['id', 'created_at', 'updated_at', 'test']
-        data = type(self).fs_o._FileStorage__objects
-        self.assertEqual(len(data), 7,
-                         "Error improperly reloaded file")
-        for k, v in data.items():
-            cls, uid = k.split('.')[0], k.split('.')[1]
-            self.assertIn(cls, clslist,
-                          "Error improperly reloaded file")
-            test = baseattr.copy()
-            for e in v.__dict__.keys():
-                self.assertIn(e, baseattr,
-                              "Error improperly reloaded file")
-                test.remove(e)
-            self.assertEqual(test, [],
-                             "Error imroperly reloaded file")
-            self.assertIsInstance(v.id, str,
-                                  "Error improperly reloaded file")
-            self.assertIsInstance(v.created_at, datetime,
-                                  "Error improperly reloaded file")
-            self.assertIsInstance(v.updated_at, datetime,
-                                  "Error improperly reloaded file")
-            self.assertEqual(uid, v.id,
-                             "Error improperly reloaded file")
 
 
 if __name__ == '__main__':
