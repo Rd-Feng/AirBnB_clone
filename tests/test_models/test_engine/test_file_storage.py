@@ -45,7 +45,7 @@ def setUpModule():
     Place.longitude = 0.0
     Place.amenity_ids = []
     try:
-        remove('file.json')
+        remove(FileStorage._FileStorage__file_path)
     except:
         pass
     try:
@@ -57,7 +57,7 @@ def setUpModule():
 def tearDownModule():
     '''Tear Stuff Down'''
     try:
-        remove('file.json')
+        remove(FileStorage._FileStorage__file_path)
     except:
         pass
     try:
@@ -105,8 +105,6 @@ class Test_01_FileStorage_Basics(unittest.TestCase):
     def test_05_class_attr_defaults(self):
         '''Test class attribute default values'''
         testFS = FileStorage()
-        self.assertEqual(testFS._FileStorage__file_path, "file.json",
-                         "Error default __file_path not 'file.json'")
         self.assertFalse(testFS._FileStorage__objects,
                          "Error default __object not empty dict")
         del testFS
@@ -126,7 +124,7 @@ class Test_02_New_Method(unittest.TestCase):
         cls.fs_o._FileStorage__objects.clear()
         del cls.fs_o
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
 
@@ -185,7 +183,7 @@ class Test_03_All_Method(unittest.TestCase):
         cls.fs_o._FileStorage__objects.clear()
         del cls.fs_o
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
 
@@ -209,7 +207,7 @@ class Test_04_Save_Method(unittest.TestCase):
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
         cls.fs_o = FileStorage()
@@ -234,7 +232,7 @@ class Test_04_Save_Method(unittest.TestCase):
         cls.fs_o._FileStorage__objects.clear()
         del cls.fs_o
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
 
@@ -295,7 +293,7 @@ class Test_05_Reload_Method(unittest.TestCase):
     def setUpClass(cls):
         '''Set Stuff Up for Class'''
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
         cls.fs_o = FileStorage()
@@ -321,7 +319,7 @@ class Test_05_Reload_Method(unittest.TestCase):
         cls.fs_o._FileStorage__objects.clear()
         del cls.fs_o
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
 
@@ -360,8 +358,16 @@ class Test_05_Reload_Method(unittest.TestCase):
             self.assertEqual(uid, v.id,
                              "Error improperly reloaded file")
 
+    def test_03_reload_with_no_file(self):
+        '''Test reload with no file '''
+        remove(type(self).fs_o._FileStorage__file_path)
+        try:
+            type(self).fs_o.reload()
+        except:
+            self.fail("Failed to reload with no file")
 
-class Test_06_Avanced(unittest.TestCase):
+
+class Test_06_Advanced(unittest.TestCase):
     '''Test FileStorage with Dynamically Added Attr'''
 
     @classmethod
@@ -375,7 +381,7 @@ class Test_06_Avanced(unittest.TestCase):
         cls.fs_o._FileStorage__objects.clear()
         del cls.fs_o
         try:
-            remove('file.json')
+            remove(FileStorage._FileStorage__file_path)
         except:
             pass
 
