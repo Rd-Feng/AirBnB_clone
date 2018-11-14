@@ -36,7 +36,6 @@ class Test_01_Place_Basics(unittest.TestCase):
         self.assertIn('save', clsdir, "Missing save method")
         self.assertIn('to_dict', clsdir, "Missing to_dict method")
 
-
     def test_04_instantiation(self):
         '''Test for failed instantiation'''
         try:
@@ -161,7 +160,7 @@ class Test_01_Place_Basics(unittest.TestCase):
         self.assertEqual(obj1.__dict__['test7'], 0.0,
                          "Failed to assign value to dynamic pub inst attr")
         self.assertNotEqual(obj1.__dict__['test8'], float('nan'),
-                         "Failed to assign value to dynamic pub inst attr")
+                            "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test9'], float('inf'),
                          "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test10'], -666,
@@ -203,24 +202,24 @@ class Test_01_Place_Basics(unittest.TestCase):
         self.assertEqual(type(obj1).user_id, '2222-2222-2222-2222',
                          "Error incorrect user_id assignment")
         self.assertEqual(type(obj1).name, 'Best Place on Earth',
-                         "Error incorrect name assignment");
+                         "Error incorrect name assignment")
         self.assertEqual(type(obj1).description, 'Only the best place',
-                         "Error incorrect description assignment");
+                         "Error incorrect description assignment")
         self.assertEqual(type(obj1).number_rooms, 888,
-                         "Error incorrect number_rooms assignment");
+                         "Error incorrect number_rooms assignment")
         self.assertEqual(type(obj1).number_bathrooms, 777,
-                         "Error incorrect number_bathrooms assignment");
+                         "Error incorrect number_bathrooms assignment")
         self.assertEqual(type(obj1).max_guest, 999,
-                         "Error incorrect max_guest assignment");
+                         "Error incorrect max_guest assignment")
         self.assertEqual(type(obj1).price_by_night, 1212,
-                         "Error incorrect price_by_night assignment");
+                         "Error incorrect price_by_night assignment")
         self.assertEqual(type(obj1).latitude, 123.456,
-                         "Error incorrect latitude assignment");
+                         "Error incorrect latitude assignment")
         self.assertEqual(type(obj1).longitude, 789.012,
-                         "Error incorrect longitutde assignment");
+                         "Error incorrect longitutde assignment")
         self.assertEqual(type(obj1).amenity_ids,
                          ['3333-3333-3333-3333', '4444-4444-4444-4444'],
-                         "Error incorrect amenity_ids assignment");
+                         "Error incorrect amenity_ids assignment")
         del obj1
 
 
@@ -292,7 +291,7 @@ class Test_04_Place_Str(unittest.TestCase):
         '''Test __str__ return value'''
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error __str__ incorrect return type")
+                              "Error __str__ incorrect return type")
 
     def test_02_str_format(self):
         '''Test __str__ format'''
@@ -309,7 +308,7 @@ class Test_04_Place_Str(unittest.TestCase):
         type(self).obj1.test2 = [1, 2, 3]
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error improper __str__ return type")
+                              "Error improper __str__ return type")
 
 
 class Test_05_Place_Save(unittest.TestCase):

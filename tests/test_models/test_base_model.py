@@ -37,7 +37,6 @@ class Test_01_BaseModel_Basics(unittest.TestCase):
         self.assertIn('save', clsdir, "Missing save method")
         self.assertIn('to_dict', clsdir, "Missing to_dict method")
 
-
     def test_04_instantiation(self):
         '''Test for failed instantiation'''
         try:
@@ -137,7 +136,7 @@ class Test_01_BaseModel_Basics(unittest.TestCase):
         self.assertEqual(obj1.__dict__['test7'], 0.0,
                          "Failed to assign value to dynamic pub inst attr")
         self.assertNotEqual(obj1.__dict__['test8'], float('nan'),
-                         "Failed to assign value to dynamic pub inst attr")
+                            "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test9'], float('inf'),
                          "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test10'], -666,
@@ -224,7 +223,7 @@ class Test_04_BaseModel_Str(unittest.TestCase):
         '''Test __str__ return value'''
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error __str__ incorrect return type")
+                              "Error __str__ incorrect return type")
 
     def test_02_str_format(self):
         '''Test __str__ format'''
@@ -241,7 +240,7 @@ class Test_04_BaseModel_Str(unittest.TestCase):
         type(self).obj1.test2 = [1, 2, 3]
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error improper __str__ return type")
+                              "Error improper __str__ return type")
 
 
 class Test_05_BaseModel_Save(unittest.TestCase):

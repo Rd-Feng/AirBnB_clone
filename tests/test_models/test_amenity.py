@@ -36,7 +36,6 @@ class Test_01_Amenity_Basics(unittest.TestCase):
         self.assertIn('save', clsdir, "Missing save method")
         self.assertIn('to_dict', clsdir, "Missing to_dict method")
 
-
     def test_04_instantiation(self):
         '''Test for failed instantiation'''
         try:
@@ -141,7 +140,7 @@ class Test_01_Amenity_Basics(unittest.TestCase):
         self.assertEqual(obj1.__dict__['test7'], 0.0,
                          "Failed to assign value to dynamic pub inst attr")
         self.assertNotEqual(obj1.__dict__['test8'], float('nan'),
-                         "Failed to assign value to dynamic pub inst attr")
+                            "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test9'], float('inf'),
                          "Failed to assign value to dynamic pub inst attr")
         self.assertEqual(obj1.__dict__['test10'], -666,
@@ -227,8 +226,8 @@ class Test_04_Amenity_Str(unittest.TestCase):
     def setUpClass(cls):
         '''Set Up Class'''
         cls.obj1 = Amenity(id="1234-5678-9012",
-                             created_at="1234-05-06T01:23:45.678901",
-                             updated_at="9999-11-11T11:11:22.222222")
+                           created_at="1234-05-06T01:23:45.678901",
+                           updated_at="9999-11-11T11:11:22.222222")
         cls.god1 = '[Amenity]'
         cls.god2 = '(1234-5678-9012)'
 
@@ -241,7 +240,7 @@ class Test_04_Amenity_Str(unittest.TestCase):
         '''Test __str__ return value'''
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error __str__ incorrect return type")
+                              "Error __str__ incorrect return type")
 
     def test_02_str_format(self):
         '''Test __str__ format'''
@@ -258,7 +257,7 @@ class Test_04_Amenity_Str(unittest.TestCase):
         type(self).obj1.test2 = [1, 2, 3]
         out = type(self).obj1.__str__()
         self.assertIsInstance(out, str,
-                         "Error improper __str__ return type")
+                              "Error improper __str__ return type")
 
 
 class Test_05_Amenity_Save(unittest.TestCase):
@@ -306,8 +305,7 @@ class Test_06_Amenity_To_Dict(unittest.TestCase):
     def test_01_is_dict_type(self):
         '''Test to_dict simple'''
         self.assertIsInstance(self.dct1, dict,
-                              "Failed to_dict does not prodice dictionary"
-                              " type")
+                              "Failed to_dict does not prodice dict type")
 
     def test_02_required_keys(self):
         '''Test for proper output format'''
