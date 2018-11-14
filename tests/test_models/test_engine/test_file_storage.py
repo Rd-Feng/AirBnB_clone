@@ -105,6 +105,8 @@ class Test_01_FileStorage_Basics(unittest.TestCase):
     def test_05_class_attr_defaults(self):
         '''Test class attribute default values'''
         testFS = FileStorage()
+        self.assertTrue(testFS._FileStorage__file_path,
+                        "Error default file path is empty")
         self.assertFalse(testFS._FileStorage__objects,
                          "Error default __object not empty dict")
         del testFS
