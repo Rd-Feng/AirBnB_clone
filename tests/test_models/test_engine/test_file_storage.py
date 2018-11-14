@@ -132,21 +132,14 @@ class Test_02_New_Method(unittest.TestCase):
 
     def test_01_basic(self):
         '''Test new() method'''
-        b_o = BM()
-        u_o = User()
-        s_o = State()
-        c_o = City()
-        a_o = Amty()
-        p_o = Place()
-        r_o = Rvw()
         try:
-            type(self).fs_o.new(b_o)
-            type(self).fs_o.new(u_o)
-            type(self).fs_o.new(s_o)
-            type(self).fs_o.new(c_o)
-            type(self).fs_o.new(a_o)
-            type(self).fs_o.new(p_o)
-            type(self).fs_o.new(r_o)
+            b_o = BM()
+            u_o = User()
+            s_o = State()
+            c_o = City()
+            a_o = Amty()
+            p_o = Place()
+            r_o = Rvw()
         except:
             self.failed("Failed to add new object to file storage")
 
@@ -171,13 +164,6 @@ class Test_03_All_Method(unittest.TestCase):
         a_o = Amty()
         p_o = Place()
         r_o = Rvw()
-        cls.fs_o.new(b_o)
-        cls.fs_o.new(u_o)
-        cls.fs_o.new(s_o)
-        cls.fs_o.new(c_o)
-        cls.fs_o.new(a_o)
-        cls.fs_o.new(p_o)
-        cls.fs_o.new(r_o)
 
     @classmethod
     def tearDownClass(cls):
@@ -213,20 +199,6 @@ class Test_04_Save_Method(unittest.TestCase):
         except:
             pass
         cls.fs_o = FileStorage()
-        b_o = BM()
-        u_o = User()
-        s_o = State()
-        c_o = City()
-        a_o = Amty()
-        p_o = Place()
-        r_o = Rvw()
-        cls.fs_o.new(b_o)
-        cls.fs_o.new(u_o)
-        cls.fs_o.new(s_o)
-        cls.fs_o.new(c_o)
-        cls.fs_o.new(a_o)
-        cls.fs_o.new(p_o)
-        cls.fs_o.new(r_o)
 
     @classmethod
     def tearDownClass(cls):
@@ -240,14 +212,28 @@ class Test_04_Save_Method(unittest.TestCase):
 
     def test_01_basic(self):
         '''Test if save works'''
+        b_o = BM()
+        u_o = User()
+        s_o = State()
+        c_o = City()
+        a_o = Amty()
+        p_o = Place()
+        r_o = Rvw()
         try:
-            type(self).fs_o.save()
+            b_o.save()
+            u_o.save()
+            s_o.save()
+            c_o.save()
+            a_o.save()
+            p_o.save()
+            r_o.save()
         except:
             self.fail("Failed to save file")
 
     def test_02_file_existence(self):
         '''Test if save file exists'''
-        self.assertTrue(isfile('file.json'), "Error missing file.json file")
+        self.assertTrue(isfile(FileStorage._FileStorage__file_path),
+                        "Error missing saved file")
 
     def test_03_file_read(self):
         '''Test file contents'''
@@ -306,14 +292,6 @@ class Test_05_Reload_Method(unittest.TestCase):
         a_o = Amty()
         p_o = Place()
         r_o = Rvw()
-        cls.fs_o.new(b_o)
-        cls.fs_o.new(u_o)
-        cls.fs_o.new(s_o)
-        cls.fs_o.new(c_o)
-        cls.fs_o.new(a_o)
-        cls.fs_o.new(p_o)
-        cls.fs_o.new(r_o)
-        cls.fs_o.save()
 
     @classmethod
     def tearDownClass(cls):
@@ -362,7 +340,10 @@ class Test_05_Reload_Method(unittest.TestCase):
 
     def test_03_reload_with_no_file(self):
         '''Test reload with no file '''
-        remove(type(self).fs_o._FileStorage__file_path)
+        try:
+            remove(type(self).fs_o._FileStorage__file_path)
+        except:
+            pass
         try:
             type(self).fs_o.reload()
         except:
@@ -389,13 +370,16 @@ class Test_06_Advanced(unittest.TestCase):
 
     def test_01_new_obj(self):
         '''Test new obj with dynamic attr'''
-        b_o = BM()
-        u_o = User()
-        s_o = State()
-        c_o = City()
-        a_o = Amty()
-        p_o = Place()
-        r_o = Rvw()
+        try:
+            b_o = BM()
+            u_o = User()
+            s_o = State()
+            c_o = City()
+            a_o = Amty()
+            p_o = Place()
+            r_o = Rvw()
+        except:
+            self.fail("Failed to add objects with dynamic attr")
         b_o.test = 'WUT'
         u_o.test = 777
         s_o.test = None
@@ -403,16 +387,6 @@ class Test_06_Advanced(unittest.TestCase):
         a_o.test = {'test': '5'}
         p_o.test = ['y', 5, []]
         r_o.test = {}
-        try:
-            type(self).fs_o.new(b_o)
-            type(self).fs_o.new(u_o)
-            type(self).fs_o.new(s_o)
-            type(self).fs_o.new(c_o)
-            type(self).fs_o.new(a_o)
-            type(self).fs_o.new(p_o)
-            type(self).fs_o.new(r_o)
-        except:
-            self.fail("Failed to add objects with dynamic attr")
 
     def test_02_save(self):
         '''Test save on obj with dynamic attr'''
