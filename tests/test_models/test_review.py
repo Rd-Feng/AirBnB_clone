@@ -13,6 +13,24 @@ from models.review import Review
 from datetime import datetime
 
 
+def setUpModule():
+    '''Set Stuff Up'''
+    models.storage._FileStorage__objects.clear()
+    try:
+        remove(models.storage._FileStorage__file_path)
+    except:
+        pass
+
+
+def tearDownModule():
+    '''Tear Stuff Down'''
+    models.storage._FileStorage__objects.clear()
+    try:
+        remove(models.storage._FileStorage__file_path)
+    except:
+        pass
+
+
 class Test_01_Review_Basics(unittest.TestCase):
     '''Tests If Review Meets Basic Specs'''
 

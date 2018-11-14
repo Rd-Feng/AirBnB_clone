@@ -13,6 +13,24 @@ from models.city import City
 from datetime import datetime
 
 
+def setUpModule():
+    '''Set Stuff Up'''
+    models.storage._FileStorage__objects.clear()
+    try:
+        remove(models.storage._FileStorage__file_path)
+    except:
+        pass
+
+
+def tearDownModule():
+    '''Tear Stuff Down'''
+    models.storage._FileStorage__objects.clear()
+    try:
+        remove(models.storage._FileStorage__file_path)
+    except:
+        pass
+
+
 class Test_01_City_Basics(unittest.TestCase):
     '''Tests If City Meets Basic Specs'''
 
