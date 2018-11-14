@@ -319,4 +319,31 @@ class Test_05_Reload_Method(unittest.TestCase):
 
     def test_01_basic(self):
         '''Test reload'''
-        pass
+        try:
+            type(self).fs_o.reload()
+        except:
+            self.fail("Failed to reload file")
+
+    def test_02_reload_properly_loaded(self):
+        '''Test reload properly loaded'''
+        clslist = ['BaseModel', 'User', 'Place', 'City', 'State', 'Amenity',
+                   'City', 'Review']
+        baseattr = ['id', 'created_at', 'updated_at']
+        data = type(self).fs_o._FileStorage__objects
+        self.assertEqual(len(data), 7,
+                         "Error improperly reloaded file")
+        for k, v in data.items():
+            cls, uid = k.split('.')[0], k.split('.')[1]
+            self.assertIn(cls, clslist,
+                          "Error improperly reloaded file")
+            for e in v.__dict__.keys():
+                self.assertIn(e, baseattr,
+                              "Error improperly reloaded file")
+            self.assertIsInstance(v.id, str,
+                                  "Error improperly reloaded file")
+            self.assertIsInstance(v.created_at, datetime,
+                                  "Error improperly reloaded file")
+            self.assertIsInstance(v.updated_at, datetime,
+                                  "Error improperly reloaded file")
+            self.assertEqual(uid, v.id,
+                             "Error improperly reloaded file")
