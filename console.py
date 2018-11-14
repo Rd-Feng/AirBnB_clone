@@ -181,7 +181,6 @@ class HBNBCommand(cmd.Cmd):
                 args = args.replace(',', ' ', 1)
                 l = list(shlex(args))
                 l[0] = l[0].strip('"')
-                print(l[1], type(l[1]))
                 self.do_update(" ".join([clsname, objid, l[0], l[1]]))
 
     def handle_dict(self, clsname, objid, d):
