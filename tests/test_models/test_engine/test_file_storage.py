@@ -219,16 +219,13 @@ class Test_04_Save_Method(unittest.TestCase):
         a_o = Amty()
         p_o = Place()
         r_o = Rvw()
-        try:
-            b_o.save()
-            u_o.save()
-            s_o.save()
-            c_o.save()
-            a_o.save()
-            p_o.save()
-            r_o.save()
-        except:
-            self.fail("Failed to save file")
+        b_o.save()
+        u_o.save()
+        s_o.save()
+        c_o.save()
+        a_o.save()
+        p_o.save()
+        r_o.save()
 
     def test_02_file_existence(self):
         '''Test if save file exists'''
