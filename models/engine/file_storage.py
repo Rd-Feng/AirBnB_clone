@@ -43,7 +43,7 @@ class FileStorage:
                    'User': User}
         try:
             with open(type(self).__file_path, 'r', encoding='utf-8') as f:
-                temp = json.loads(f.readline())
+                temp = json.load(f)
                 for k, v in temp.items():
                     self.new(clslist[v['__class__']](**v))
         except FileNotFoundError:
