@@ -310,6 +310,135 @@ class Test_01_Basic(unittest.TestCase):
         self.assertFalse(usid in self.out.getvalue())
         self.clearIO()
 
+    def test_51_method_fail_simple(self):
+        '''test call method fail'''
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.'))
+        self.assertEqual('*** Unknown syntax: BaseModel.\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.x'))
+        self.assertEqual('*** Unknown syntax: BaseModel.x\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.y()'))
+        self.assertEqual('*** Unknown syntax: BaseModel.y()\n',
+                         self.out.getvalue())
+        self.clearIO()
+
+    def test_52_method_all_success(self):
+        '''test call method all success'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.all()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(l, list)
+        self.assertEqual(len(l), 2)
+        for e in l:
+            self.assertIsInstance(e, str)
+            self.assertTrue(self.checkObjStrType(e, 'BaseModel'))
+        self.assertFalse(self.c.onecmd('User.all()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(l, list)
+        self.assertEqual(len(l), 1)
+        for e in l:
+            self.assertIsInstance(e, str)
+            self.assertTrue(self.checkObjStrType(e, 'User'))
+        self.assertFalse(self.c.onecmd('Amenity.all()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, [])
+
+    def test_53_method_all_fail(self):
+        '''test call method all failure'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('Amenity.all'))
+        self.assertEqual('*** Unknown syntax: Amenity.all\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('A.all()'))
+        self.assertEqual('*** Unknown syntax: A.all()\n',
+                         self.out.getvalue())
+        self.clearIO()
+
+    def test_54_method_count(self):
+        '''test call method count'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.count()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, 2)
+        self.assertFalse(self.c.onecmd('User.count()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, 1)
+        self.assertFalse(self.c.onecmd('Amenity.count()'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, 0)
+        self.assertFalse(self.c.onecmd('BaseModel.count("a")'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, 2)
+        self.assertFalse(self.c.onecmd('BaseModel.count(3)'))
+        l = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertEqual(l, 2)
+
+    def test_55_method_count_fail(self):
+        '''test call method count fail'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('Amenity.count'))
+        self.assertEqual('*** Unknown syntax: Amenity.count\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('A.count()'))
+        self.assertEqual('*** Unknown syntax: A.count()\n',
+                         self.out.getvalue())
+        self.clearIO()
+
+    def test_56_method_show_success(self):
+        '''test call method show success'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.all()'))
+        output = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('User.all()'))
+        output += json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(output[0], str)
+        self.assertTrue(self.checkObjStrType(output[0], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[1], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[2], 'User'))
+        lst = [['BaseModel', output[0].split(' ', 2)[1][1:-1]],
+               ['BaseModel', output[1].split(' ', 2)[1][1:-1]],
+               ['User', output[2].split(' ', 2)[1][1:-1]]]
+        for e in lst:
+            testcmd = e[0] + '.show(' + e[1] + ')'
+            self.assertFalse(self.c.onecmd(testcmd))
+            l = self.out.getvalue()
+            self.clearIO()
+            self.assertTrue(self.checkObjStrType(l, e[0]))
+
     @staticmethod
     def checkObjStrType(e, t):
         """check if e is a string representation of type 't'"""
