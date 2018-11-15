@@ -57,6 +57,6 @@ Display all objects of type `type`. If `type` is not specified, display all obje
 #### `help [command]`
 Show help information of `command`. If `command` is not specified, display all documented commands.
 
-AUTHOR
-Stephen Chu <stephen.chu530@gmail.com>
+# AUTHOR
+Stephen Chu <stephen.chu530@gmail.com><br/>
 Rui Feng <394@holbertonschool.com>
