@@ -33,7 +33,7 @@ class FileStorage:
         for k, v in type(self).__objects.items():
             temp[k] = v.to_dict()
         with open(type(self).__file_path, 'w', encoding='utf-8') as f:
-            f.write(json.dumps(temp) + '\n')
+            f.write(json.dumps(temp))
 
     def reload(self):
         """reload objects from file"""
