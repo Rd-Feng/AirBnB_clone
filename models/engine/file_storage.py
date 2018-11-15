@@ -23,7 +23,7 @@ class FileStorage:
 
     def new(self, obj):
         """ put object in __objects """
-        k = obj.__class__.__name__ + "." + obj.id
+        k = "{}.{}".format(obj.__class__.__name__, obj.id)
         type(self).__objects[k] = obj
 
     def save(self):
@@ -33,7 +33,7 @@ class FileStorage:
         for k, v in type(self).__objects.items():
             temp[k] = v.to_dict()
         with open(type(self).__file_path, 'w', encoding='utf-8') as f:
-            f.write(json.dumps(temp))
+            f.write(json.dumps(temp) + '\n')
 
     def reload(self):
         """reload objects from file"""
