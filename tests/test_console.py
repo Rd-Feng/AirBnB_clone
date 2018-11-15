@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 '''Test Console Module'''
+
 from console import HBNBCommand
 from unittest.mock import create_autospec
 from uuid import UUID
@@ -439,8 +440,27 @@ class Test_01_Basic(unittest.TestCase):
             self.clearIO()
             self.assertTrue(self.checkObjStrType(l, e[0]))
 
+    def test_57_method_show_failure(self):
+        '''test call method show failure'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('Amenity.show'))
+        self.assertEqual('*** Unknown syntax: Amenity.show\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('A.show()'))
+        self.assertEqual('*** Unknown syntax: A.show()\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.show("1234")'))
+        self.assertEqual('** no instance found **\n',
+                         self.out.getvalue())
+        self.clearIO()
+
     def test_58_method_destroy_success(self):
-        '''test call method destroy_success'''
+        '''test call method destroy success'''
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create User'))
@@ -463,10 +483,30 @@ class Test_01_Basic(unittest.TestCase):
         for e in lst:
             testcmd = e[0] + '.destroy(' + e[1] + ')'
             self.assertFalse(self.c.onecmd(testcmd))
+            l = self.out.getvalue()
             self.clearIO()
 
+    def test_59_method_destroy_failure(self):
+        '''test call method destroy failure'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('Amenity.destroy'))
+        self.assertEqual('*** Unknown syntax: Amenity.destroy\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('A.destroy()'))
+        self.assertEqual('*** Unknown syntax: A.destroy()\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.destroy("1234")'))
+        self.assertEqual('** no instance found **\n',
+                         self.out.getvalue())
+        self.clearIO()
+
     def test_60_method_upd_attr_success(self):
-        '''test call method destroy_success'''
+        '''test call method upd attr success'''
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create User'))
@@ -492,8 +532,28 @@ class Test_01_Basic(unittest.TestCase):
             l = self.out.getvalue()
             self.clearIO()
 
+    def test_61_method_upd_attr_failure(self):
+        '''test call method upd attr failure'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('Amenity.update'))
+        self.assertEqual('*** Unknown syntax: Amenity.update\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('A.update()'))
+        self.assertEqual('*** Unknown syntax: A.update()\n',
+                         self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd(
+            'BaseModel.update("1234-1234", "test", "test")'))
+        self.assertEqual('** no instance found **\n',
+                         self.out.getvalue())
+        self.clearIO()
+
     def test_62_method_upd_dict_success(self):
-        '''test call method destroy_success'''
+        '''test call method upd dict success'''
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create BaseModel'))
         self.assertFalse(self.c.onecmd('create User'))
@@ -518,6 +578,18 @@ class Test_01_Basic(unittest.TestCase):
             self.assertFalse(self.c.onecmd(testcmd))
             l = self.out.getvalue()
             self.clearIO()
+
+    def test_63_method_upd_dict_failure(self):
+        '''test call method upd dict failure'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd(
+            'BaseModel.update("1234-1234", {"test", "test"})'))
+        self.assertEqual('** no instance found **\n',
+                         self.out.getvalue())
+        self.clearIO()
 
     @staticmethod
     def checkObjStrType(e, t):
