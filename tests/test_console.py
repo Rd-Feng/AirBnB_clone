@@ -439,6 +439,86 @@ class Test_01_Basic(unittest.TestCase):
             self.clearIO()
             self.assertTrue(self.checkObjStrType(l, e[0]))
 
+    def test_58_method_destroy_success(self):
+        '''test call method destroy_success'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.all()'))
+        output = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('User.all()'))
+        output += json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(output[0], str)
+        self.assertTrue(self.checkObjStrType(output[0], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[1], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[2], 'User'))
+        lst = [['BaseModel', output[0].split(' ', 2)[1][1:-1]],
+               ['BaseModel', output[1].split(' ', 2)[1][1:-1]],
+               ['User', output[2].split(' ', 2)[1][1:-1]]]
+        for e in lst:
+            testcmd = e[0] + '.destroy(' + e[1] + ')'
+            self.assertFalse(self.c.onecmd(testcmd))
+            self.clearIO()
+
+    def test_60_method_upd_attr_success(self):
+        '''test call method destroy_success'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.all()'))
+        output = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('User.all()'))
+        output += json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(output[0], str)
+        self.assertTrue(self.checkObjStrType(output[0], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[1], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[2], 'User'))
+        lst = [['BaseModel', output[0].split(' ', 2)[1][1:-1]],
+               ['BaseModel', output[1].split(' ', 2)[1][1:-1]],
+               ['User', output[2].split(' ', 2)[1][1:-1]]]
+        for e in lst:
+            testcmd = e[0] + '.update(' + e[1] + ', "test", "test")'
+            self.assertFalse(self.c.onecmd(testcmd))
+            l = self.out.getvalue()
+            self.clearIO()
+
+    def test_62_method_upd_dict_success(self):
+        '''test call method destroy_success'''
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create BaseModel'))
+        self.assertFalse(self.c.onecmd('create User'))
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('BaseModel.all()'))
+        output = json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertFalse(self.c.onecmd('User.all()'))
+        output += json.loads(self.out.getvalue())
+        self.clearIO()
+        self.assertIsInstance(output[0], str)
+        self.assertTrue(self.checkObjStrType(output[0], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[1], 'BaseModel'))
+        self.assertIsInstance(output[1], str)
+        self.assertTrue(self.checkObjStrType(output[2], 'User'))
+        lst = [['BaseModel', output[0].split(' ', 2)[1][1:-1]],
+               ['BaseModel', output[1].split(' ', 2)[1][1:-1]],
+               ['User', output[2].split(' ', 2)[1][1:-1]]]
+        for e in lst:
+            testcmd = e[0] + '.update(' + e[1] + ", {'test': 'test'})"
+            self.assertFalse(self.c.onecmd(testcmd))
+            l = self.out.getvalue()
+            self.clearIO()
+
     @staticmethod
     def checkObjStrType(e, t):
         """check if e is a string representation of type 't'"""
