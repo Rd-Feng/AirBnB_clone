@@ -1,7 +1,5 @@
 .places {
   width: 100%;
-  position: absolute;
-  z-index: 1;
   margin-left: 25px;
 }
 .places h1 {
