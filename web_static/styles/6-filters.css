@@ -38,6 +38,10 @@
   list-style-type: none;
 }
 
+.popover h2 {
+  margin-bottom: 1px;
+}
+
 .city {
   margin-left: -20px;
   margin-top: -5px;
