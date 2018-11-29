@@ -1,0 +1,17 @@
+header {
+  height: 70px;
+  width: 100%;
+  border-bottom: 1px solid #CCCCCC;
+  background: url("../images/logo.png");
+  background-repeat: no-repeat;
+  background-position: 20px;
+}
+
+@media screen and (max-width: 645px) {
+  header {
+    border-bottom: none;
+    background-position: center;
+    background-size: 30%;
+    background-color: #FAFAFA;
+  }
+}
