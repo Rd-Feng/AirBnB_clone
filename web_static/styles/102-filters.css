@@ -58,13 +58,14 @@
   border: #DDDDDD solid 1px;
   border-radius: 4px;
   margin-top: -4px;
+  margin-left: -1px;
   padding-top: 10px;
   padding-bottom: 10px;
   word-wrap: break-word;
 }
 
 .amenities:hover .popover {
-  margin-left: 4px;
+  margin-left: 3px;
 }
 
 .locations:hover .popover,

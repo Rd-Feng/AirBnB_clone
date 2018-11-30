@@ -57,6 +57,7 @@
   border: #DDDDDD solid 1px;
   border-radius: 4px;
   margin-top: -4px;
+  margin-left: -1px;
   padding-top: 10px;
   padding-bottom: 10px;
   word-wrap: break-word;
@@ -65,6 +66,10 @@
 .locations:hover .popover,
 .amenities:hover .popover {
   display: inline-block;
+}
+
+.amenities:hover .popover {
+  margin-left: -1px;
 }
 
 button.button_search {
