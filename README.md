@@ -1,5 +1,5 @@
 # AirBnB Clone
-This project aim to make a clone of the AirBnB from scratch, in few steps. Please stay tuned to the repo for update.<hr/>
+This project aim to make a clone of the AirBnB from scratch, in few steps. Please visit https://github.com/Rd-Feng/AirBnB_clone_v2 for continue development.<hr/>
 
 # Step 1: Write a command interpreter (Console)
 This console is written in Python3, and will be used to do CRUD operations (Create, Read, Update, Delete) on our AirBnB objects (User, City, Review, etc.). More information on the models will be described in the later section.<br/>
